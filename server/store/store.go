@@ -5,10 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"golang.org/x/crypto/ssh"
-
 	"github.com/nsheridan/cashier/lib"
 	"github.com/nsheridan/cashier/server/config"
+	"golang.org/x/crypto/ssh"
 )
 
 // New returns a new configured database.
@@ -26,7 +25,6 @@ func New(c config.Database) (CertStorer, error) {
 // revocation purposes.
 type CertStorer interface {
 	Get(id string) (*CertRecord, error)
-	SetCert(cert *ssh.Certificate) error
 	SetRecord(record *CertRecord) error
 	List(includeExpired bool) ([]*CertRecord, error)
 	Revoke(id []string) error
@@ -66,7 +64,8 @@ func parseTime(t uint64) time.Time {
 	return time.Unix(int64(t), 0)
 }
 
-func parseCertificate(cert *ssh.Certificate) *CertRecord {
+// MakeRecord converts a Certificate to a CertRecord
+func MakeRecord(cert *ssh.Certificate) *CertRecord {
 	return &CertRecord{
 		KeyID:      cert.KeyId,
 		Principals: StringSlice(cert.ValidPrincipals),

@@ -7,8 +7,6 @@ import (
 	"path"
 	"time"
 
-	"golang.org/x/crypto/ssh"
-
 	"github.com/go-sql-driver/mysql"
 	"github.com/gobuffalo/packr"
 	multierror "github.com/hashicorp/go-multierror"
@@ -115,11 +113,6 @@ func (db *sqlStore) Get(id string) (*CertRecord, error) {
 	}
 	r := &CertRecord{}
 	return r, db.get.Get(r, id)
-}
-
-// SetCert parses a *ssh.Certificate and records it
-func (db *sqlStore) SetCert(cert *ssh.Certificate) error {
-	return db.SetRecord(parseCertificate(cert))
 }
 
 // SetRecord records a *CertRecord

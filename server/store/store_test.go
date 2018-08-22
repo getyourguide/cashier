@@ -30,7 +30,7 @@ func TestParseCertificate(t *testing.T) {
 	}
 	s, _ := ssh.NewSignerFromKey(r)
 	c.SignCert(rand.Reader, s)
-	rec := parseCertificate(c)
+	rec := MakeRecord(c)
 
 	a.Equal(c.KeyId, rec.KeyID)
 	a.Equal(c.ValidPrincipals, []string(rec.Principals))
@@ -73,7 +73,8 @@ func testStore(t *testing.T, db CertStorer) {
 	cert := c.(*ssh.Certificate)
 	cert.ValidBefore = uint64(time.Now().Add(1 * time.Hour).UTC().Unix())
 	cert.ValidAfter = uint64(time.Now().Add(-5 * time.Minute).UTC().Unix())
-	if err := db.SetCert(cert); err != nil {
+	rec := MakeRecord(cert)
+	if err := db.SetRecord(rec); err != nil {
 		t.Error(err)
 	}
 
