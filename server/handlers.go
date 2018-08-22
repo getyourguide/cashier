@@ -63,6 +63,7 @@ func (a *app) sign(w http.ResponseWriter, r *http.Request) {
 	}
 
 	rec := store.MakeRecord(cert)
+	rec.Message = req.Message
 	if err := a.certstore.SetRecord(rec); err != nil {
 		log.Printf("Error recording cert: %v", err)
 	}
