@@ -69,7 +69,7 @@ func newSQLStore(c config.Database) (*sqlStore, error) {
 		conn: conn,
 	}
 
-	if db.set, err = conn.Preparex("INSERT INTO issued_certs (key_id, principals, created_at, expires_at, raw_key) VALUES (?, ?, ?, ?, ?)"); err != nil {
+	if db.set, err = conn.Preparex("INSERT INTO issued_certs (key_id, principals, created_at, expires_at, raw_key, message) VALUES (?, ?, ?, ?, ?, ?)"); err != nil {
 		return nil, fmt.Errorf("sqlStore: prepare set: %v", err)
 	}
 	if db.get, err = conn.Preparex("SELECT * FROM issued_certs WHERE key_id = ?"); err != nil {
@@ -120,7 +120,7 @@ func (db *sqlStore) SetRecord(rec *CertRecord) error {
 	if err := db.conn.Ping(); err != nil {
 		return errors.Wrap(err, "unable to connect to database")
 	}
-	_, err := db.set.Exec(rec.KeyID, rec.Principals, rec.CreatedAt, rec.Expires, rec.Raw)
+	_, err := db.set.Exec(rec.KeyID, rec.Principals, rec.CreatedAt, rec.Expires, rec.Raw, rec.Message)
 	return err
 }
 

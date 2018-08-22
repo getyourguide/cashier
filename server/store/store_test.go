@@ -154,6 +154,6 @@ func TestMarshalCert(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	want := `{"key_id":"id","principals":["user"],"revoked":false,"created_at":"2017-04-10 13:00:00 +0000","expires":"2017-04-11 10:00:00 +0000"}`
+	want := `{"key_id":"id","principals":["user"],"revoked":false,"created_at":"2017-04-10 13:00:00 +0000","expires":"2017-04-11 10:00:00 +0000","message":""}`
 	a.JSONEq(want, string(b))
 }

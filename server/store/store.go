@@ -41,6 +41,7 @@ type CertRecord struct {
 	Expires    time.Time   `json:"expires" db:"expires_at"`
 	Revoked    bool        `json:"revoked" db:"revoked"`
 	Raw        string      `json:"-" db:"raw_key"`
+	Message    string      `json:"message" db:"message"`
 }
 
 // MarshalJSON implements the json.Marshaler interface for the CreatedAt and
