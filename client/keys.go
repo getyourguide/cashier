@@ -123,8 +123,6 @@ func GenerateKey(options ...func(*options)) (Key, ssh.PublicKey, error) {
 		privkey, err = generateECDSAKey(config.size)
 	case "ed25519":
 		privkey, err = generateED25519Key()
-	default:
-		privkey, err = generateRSAKey(config.size)
 	}
 	if err != nil {
 		return nil, nil, errors.Wrapf(err, "unable to generate %s key-pair", config.keytype)

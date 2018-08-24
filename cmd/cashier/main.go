@@ -16,6 +16,7 @@ import (
 	"github.com/nsheridan/cashier/lib"
 	"github.com/pkg/browser"
 	"github.com/spf13/pflag"
+	"github.com/spf13/viper"
 	"golang.org/x/crypto/ssh/agent"
 )
 
@@ -30,8 +31,18 @@ var (
 	version = pflag.Bool("version", false, "Print version and exit")
 )
 
+func bindFlags() {
+	viper.BindPFlag("ca", pflag.Lookup("ca"))
+	viper.BindPFlag("key_type", pflag.Lookup("key_type"))
+	viper.BindPFlag("key_size", pflag.Lookup("key_size"))
+	viper.BindPFlag("validity", pflag.Lookup("validity"))
+	viper.BindPFlag("key_file_prefix", pflag.Lookup("key_file_prefix"))
+	viper.SetDefault("validateTLSCertificate", true)
+}
+
 func main() {
 	pflag.Parse()
+	bindFlags()
 	if *version {
 		fmt.Printf("%s\n", lib.Version)
 		os.Exit(0)

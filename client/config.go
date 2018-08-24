@@ -4,7 +4,6 @@ import (
 	"os"
 
 	"github.com/mitchellh/go-homedir"
-	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
 
@@ -18,18 +17,8 @@ type Config struct {
 	PublicFilePrefix       string `mapstructure:"key_file_prefix"`
 }
 
-func setDefaults() {
-	viper.BindPFlag("ca", pflag.Lookup("ca"))
-	viper.BindPFlag("key_type", pflag.Lookup("key_type"))
-	viper.BindPFlag("key_size", pflag.Lookup("key_size"))
-	viper.BindPFlag("validity", pflag.Lookup("validity"))
-	viper.BindPFlag("key_file_prefix", pflag.Lookup("key_file_prefix"))
-	viper.SetDefault("validateTLSCertificate", true)
-}
-
 // ReadConfig reads the client configuration from a file into a Config struct.
 func ReadConfig(path string) (*Config, error) {
-	setDefaults()
 	if _, err := os.Stat(path); err == nil {
 		viper.SetConfigFile(path)
 		viper.SetConfigType("hcl")
