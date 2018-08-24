@@ -6,8 +6,11 @@ import (
 	"crypto/rsa"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"path"
 	"testing"
 	"time"
 
@@ -109,6 +112,34 @@ func TestSignBad(t *testing.T) {
 	}
 	cert, err := Sign(k, "token", c)
 	if cert != nil && err == nil {
+		t.Error(err)
+	}
+}
+
+func TestSavePublicFiles(t *testing.T) {
+	tmp, _ := ioutil.TempDir("", "pub")
+	defer os.RemoveAll(tmp)
+	c, _, _, _, _ := ssh.ParseAuthorizedKey(testdata.Cert)
+	p, _, _, _, _ := ssh.ParseAuthorizedKey(testdata.Pub)
+	if err := SavePublicFiles(tmp, c.(*ssh.Certificate), p); err != nil {
+		t.Error(err)
+	}
+	want := []string{path.Join(tmp, "id_key.pub"), path.Join(tmp, "id_key-cert.pub")}
+	for _, f := range want {
+		if _, err := os.Stat(f); err != nil {
+			t.Error(err)
+		}
+	}
+}
+
+func TestSavePrivateFiles(t *testing.T) {
+	tmp, _ := ioutil.TempDir("", "pub")
+	c, _, _, _, _ := ssh.ParseAuthorizedKey(testdata.Cert)
+	k, _, _ := GenerateKey()
+	if err := SavePrivateFiles(tmp, c.(*ssh.Certificate), k); err != nil {
+		t.Error(err)
+	}
+	if _, err := os.Stat(path.Join(tmp, "id_key")); err != nil {
 		t.Error(err)
 	}
 }
