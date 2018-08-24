@@ -73,6 +73,24 @@ func TestCert(t *testing.T) {
 	}
 }
 
+func TestMaxLifetime(t *testing.T) {
+	// Request a cert valid for 1 week. Signer has a 1 hour limit.
+	lifetime := time.Now().Add(7 * 24 * time.Hour)
+	r := &lib.SignRequest{
+		Key:        string(testdata.Pub),
+		ValidUntil: lifetime,
+	}
+	cert, err := signer.SignUserKey(r, "gopher1")
+	if err != nil {
+		t.Error(err)
+	}
+	if uint64(lifetime.Unix()) == cert.ValidBefore {
+		expires := time.Unix(int64(cert.ValidBefore), 0)
+		expected := time.Now().Add(signer.maxLifetime)
+		t.Errorf("Unexpected expiration: %v. Wanted %v", expires, expected)
+	}
+}
+
 func TestRevocationList(t *testing.T) {
 	r := &lib.SignRequest{
 		Key:        string(testdata.Pub),
@@ -131,8 +149,8 @@ func TestDefaultPermissions(t *testing.T) {
 	}
 	key, _ := ssh.ParsePrivateKey(testdata.Priv)
 	signer := &KeySigner{
-		ca:       key,
-		validity: 12 * time.Hour,
+		ca:          key,
+		maxLifetime: 12 * time.Hour,
 	}
 	cert, err := signer.SignUserKey(r, "gopher1")
 	if err != nil {

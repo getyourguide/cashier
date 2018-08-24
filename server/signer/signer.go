@@ -30,7 +30,7 @@ var (
 // KeySigner does the work of signing a ssh public key with the CA key.
 type KeySigner struct {
 	ca          ssh.Signer
-	validity    time.Duration
+	maxLifetime time.Duration
 	principals  []string
 	permissions []string
 }
@@ -57,16 +57,17 @@ func (s *KeySigner) SignUserKey(req *lib.SignRequest, username string) (*ssh.Cer
 	if err != nil {
 		return nil, err
 	}
-	expires := time.Now().UTC().Add(s.validity)
-	if req.ValidUntil.After(expires) {
-		req.ValidUntil = expires
+	maxLifetime := time.Now().UTC().Add(s.maxLifetime)
+	certLifetime := uint64(req.ValidUntil.Unix())
+	if req.ValidUntil.After(maxLifetime) {
+		certLifetime = uint64(maxLifetime.Unix())
 	}
 	cert := &ssh.Certificate{
 		CertType:        ssh.UserCert,
 		Key:             pubkey,
 		KeyId:           fmt.Sprintf("%s_%d", username, time.Now().UTC().Unix()),
 		ValidAfter:      uint64(time.Now().UTC().Add(-5 * time.Minute).Unix()),
-		ValidBefore:     uint64(req.ValidUntil.Unix()),
+		ValidBefore:     certLifetime,
 		ValidPrincipals: []string{username},
 	}
 	cert.ValidPrincipals = append(cert.ValidPrincipals, s.principals...)
@@ -104,13 +105,13 @@ func New(conf *config.SSH) (*KeySigner, error) {
 	if err != nil {
 		return nil, fmt.Errorf("unable to parse CA key: %v", err)
 	}
-	validity, err := time.ParseDuration(conf.MaxAge)
+	maxLifetime, err := time.ParseDuration(conf.MaxAge)
 	if err != nil {
 		return nil, fmt.Errorf("error parsing duration '%s': %v", conf.MaxAge, err)
 	}
 	return &KeySigner{
 		ca:          key,
-		validity:    validity,
+		maxLifetime: maxLifetime,
 		principals:  conf.AdditionalPrincipals,
 		permissions: conf.Permissions,
 	}, nil
