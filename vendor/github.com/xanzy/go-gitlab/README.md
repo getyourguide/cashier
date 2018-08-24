@@ -23,8 +23,8 @@ to add new and/or missing endpoints. Currently the following services are suppor
 - [x] Award Emojis
 - [x] Branches
 - [x] Broadcast Messages
-- [x] Project-level Variables
-- [x] Group-level Variables
+- [ ] Project-level Variables
+- [ ] Group-level Variables
 - [x] Commits
 - [ ] Custom Attributes
 - [x] Deployments
@@ -42,9 +42,8 @@ to add new and/or missing endpoints. Currently the following services are suppor
 - [x] Group Members
 - [x] Issues
 - [x] Issue Boards
-- [x] Group Issue Boards 
 - [x] Jobs
-- [x] Keys
+- [ ] Keys
 - [x] Labels
 - [ ] License
 - [x] Merge Requests

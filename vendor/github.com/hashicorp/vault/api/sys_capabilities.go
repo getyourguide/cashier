@@ -2,10 +2,7 @@ package api
 
 import (
 	"context"
-	"errors"
 	"fmt"
-
-	"github.com/mitchellh/mapstructure"
 )
 
 func (c *Sys) CapabilitiesSelf(path string) ([]string, error) {
@@ -36,19 +33,22 @@ func (c *Sys) Capabilities(token, path string) ([]string, error) {
 	}
 	defer resp.Body.Close()
 
-	secret, err := ParseSecret(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-	if secret == nil || secret.Data == nil {
-		return nil, errors.New("data from server response is empty")
-	}
-
-	var res []string
-	err = mapstructure.Decode(secret.Data[path], &res)
+	var result map[string]interface{}
+	err = resp.DecodeJSON(&result)
 	if err != nil {
 		return nil, err
 	}
 
-	return res, nil
+	if result["capabilities"] == nil {
+		return nil, nil
+	}
+	var capabilities []string
+	capabilitiesRaw, ok := result["capabilities"].([]interface{})
+	if !ok {
+		return nil, fmt.Errorf("error interpreting returned capabilities")
+	}
+	for _, capability := range capabilitiesRaw {
+		capabilities = append(capabilities, capability.(string))
+	}
+	return capabilities, nil
 }

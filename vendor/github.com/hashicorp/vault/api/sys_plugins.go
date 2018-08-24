@@ -12,7 +12,7 @@ type ListPluginsInput struct{}
 // ListPluginsResponse is the response from the ListPlugins call.
 type ListPluginsResponse struct {
 	// Names is the list of names of the plugins.
-	Names []string `json:"names"`
+	Names []string
 }
 
 // ListPlugins lists all plugins in the catalog and returns their names as a

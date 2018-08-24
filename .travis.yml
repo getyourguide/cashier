@@ -16,6 +16,9 @@ matrix:
     - go: tip
   fast_finish: true
 
+notifications:
+  email: false
+
 before_install:
   - make dep
   - mysql -e 'CREATE DATABASE certs;'
