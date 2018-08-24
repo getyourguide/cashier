@@ -11,13 +11,13 @@ CGO_ENABLED ?= $(shell go env CGO_ENABLED)
 all: test build
 
 test: dep
-	go test ./...
-	go install -race $(CASHIER_CMD) $(CASHIERD_CMD)
 	go vet ./...
 	go list ./... |xargs -L1 golint -set_exit_status
 	gofmt -s -d -l -e $(SRC_FILES)
 	$(MAKE) generate
 	@[ -z "`git status --porcelain`" ] || (echo "unexpected files: `git status --porcelain`" && exit 1)
+	go test -race -coverprofile=coverage.txt -covermode=atomic ./...
+	go install -race $(CASHIER_CMD) $(CASHIERD_CMD)
 
 build: cashier cashierd
 

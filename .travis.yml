@@ -8,7 +8,7 @@ env:
 go:
   - 1.11rc2
   - 1.10.x
-  - 1.9.x
+#  - 1.9.x
   - tip
 
 matrix:
@@ -27,3 +27,6 @@ install:
 sudo: false
 script:
   - make test
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
