@@ -10,11 +10,13 @@ CGO_ENABLED ?= $(shell go env CGO_ENABLED)
 
 all: test build
 
-test: dep
-	go test -coverprofile=coverage.txt -covermode=count ./...
-	go install -race $(CASHIER_CMD) $(CASHIERD_CMD)
-
-lint: dep
+test:
+	go install $(flags) -race $(CASHIER_CMD) $(CASHIERD_CMD)
+	for d in $$(go list ./...); do \
+		go test $(flags) -coverprofile=$$(basename $$d)_profile.out -covermode=count $$d || exit 1; \
+	done
+	cat *_profile.out >> coverage.txt
+	rm -f *_profile.out
 	go get -u golang.org/x/lint/golint
 	go vet ./...
 	go list ./... |xargs -L1 golint -set_exit_status
@@ -28,10 +30,10 @@ generate:
 	go generate -x ./...
 
 %-cmd:
-	CGO_ENABLED=$(CGO_ENABLED) GOARCH=$(GOARCH) GOOS=$(GOOS) vgo build -ldflags="-X $(VERSION_PKG)=$(VERSION)" -o $* ./cmd/$*
+	CGO_ENABLED=$(CGO_ENABLED) GOARCH=$(GOARCH) GOOS=$(GOOS) go build -ldflags="-X $(VERSION_PKG)=$(VERSION)" -o $* ./cmd/$*
 
 install-%: generate
-	CGO_ENABLED=$(CGO_ENABLED) GOARCH=$(GOARCH) GOOS=$(GOOS) vgo install -x -ldflags="-X $(VERSION_PKG)=$(VERSION)" ./cmd/$*
+	CGO_ENABLED=$(CGO_ENABLED) GOARCH=$(GOARCH) GOOS=$(GOOS) go install -x -ldflags="-X $(VERSION_PKG)=$(VERSION)" ./cmd/$*
 
 clean:
 	rm -f cashier cashierd
@@ -40,10 +42,7 @@ clean:
 migration:
 	go run ./generate/migration/migration.go $(name)
 
-dep:
-	go get -u golang.org/x/vgo
-
 version:
 	@echo $(VERSION)
 
-.PHONY: all build dep generate test cashier cashierd clean migration
+.PHONY: all build generate test cashier cashierd clean migration

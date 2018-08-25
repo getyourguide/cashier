@@ -2,33 +2,34 @@ language: go
 services:
   - mysql
 
-env:
-  - SUITE=lint
-  - SUITE=test
-
-go:
-  - 1.11.x
-  - 1.10.x
-  - tip
+# env:
+#   - SUITE=lint
+#   - SUITE=test
 
 matrix:
-  allow_failures:
-    - go: tip
   fast_finish: true
+  allow_failures:
+    - go: master
+  include:
+  - go: "1.11.x"
+    script: GO111MODULE="on" MYSQL_TEST="true" make test flags="-mod=vendor"
+  - go: "master"
+    script: GO111MODULE="on" MYSQL_TEST="true" make test flags="-mod=vendor"
+  - go: "1.10.x"
+    script: MYSQL_TEST="true" make test
+  - go: "1.9.x"
+    script: MYSQL_TEST="true" make test
 
 notifications:
   email: false
 
 before_install:
-  - make dep
   - mysql -e 'CREATE DATABASE certs;'
 
 install:
   - go version
 
 sudo: false
-script:
-  - MYSQL_TEST="true" make $SUITE
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
