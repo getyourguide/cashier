@@ -1,0 +1,27 @@
+kind: pipeline
+name: build
+
+workspace:
+  base: /go
+  path: src/github.com/nsheridan/cashier
+
+services:
+- name: mysql-server
+  image: mysql
+  ports:
+    - 3306
+  environment:
+    MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    MYSQL_DATABASE: "certs"
+
+steps:
+- name: run tests
+  image: golang
+  environment:
+    MYSQL_TEST: true
+    MYSQL_TEST_USER: "root"
+    MYSQL_TEST_HOST: "mysql-server"
+  commands:
+    - sleep 5 # give mysql a chance to start
+    - make dep
+    - make test
