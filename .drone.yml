@@ -2,10 +2,6 @@
 kind: pipeline
 name: build
 
-workspace:
-  base: /go
-  path: src/github.com/nsheridan/cashier
-
 steps:
 - name: run tests
   image: golang
