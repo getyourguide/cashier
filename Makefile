@@ -51,7 +51,9 @@ dep:
 version:
 	@echo $(VERSION)
 
-deploy: clean build
-	sls deploy --verbose
+deploy: GOARCH = amd64
+deploy: GOOS = linux
+deploy: clean cashierd
+	echo sls deploy --verbose
 
 .PHONY: all build dep generate test cashier cashierd clean migration deploy
