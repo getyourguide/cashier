@@ -13,9 +13,9 @@ import (
 	"strings"
 
 	"github.com/gorilla/csrf"
-	"github.com/nsheridan/cashier/lib"
-	"github.com/nsheridan/cashier/server/store"
-	"github.com/nsheridan/cashier/server/templates"
+	"github.com/getyourguide/cashier/lib"
+	"github.com/getyourguide/cashier/server/store"
+	"github.com/getyourguide/cashier/server/templates"
 	"github.com/pkg/errors"
 	"golang.org/x/oauth2"
 )

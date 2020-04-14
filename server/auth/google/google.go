@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/nsheridan/cashier/server/auth"
-	"github.com/nsheridan/cashier/server/config"
-	"github.com/nsheridan/cashier/server/metrics"
+	"github.com/getyourguide/cashier/server/auth"
+	"github.com/getyourguide/cashier/server/config"
+	"github.com/getyourguide/cashier/server/metrics"
 
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"

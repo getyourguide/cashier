@@ -15,14 +15,14 @@ import (
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/oauth2"
 
+	"github.com/getyourguide/cashier/lib"
+	"github.com/getyourguide/cashier/server/auth/testprovider"
+	"github.com/getyourguide/cashier/server/config"
+	"github.com/getyourguide/cashier/server/signer"
+	"github.com/getyourguide/cashier/server/store"
+	"github.com/getyourguide/cashier/testdata"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
-	"github.com/nsheridan/cashier/lib"
-	"github.com/nsheridan/cashier/server/auth/testprovider"
-	"github.com/nsheridan/cashier/server/config"
-	"github.com/nsheridan/cashier/server/signer"
-	"github.com/nsheridan/cashier/server/store"
-	"github.com/nsheridan/cashier/testdata"
 	"github.com/stripe/krl"
 )
 
@@ -138,7 +138,9 @@ func TestSignRevoke(t *testing.T) {
 	if err != nil {
 		t.Fail()
 	}
-	if !rl.IsRevoked(cert) {
+	if rl == nil {
+		t.Errorf("Revocation list is nil")
+	} else if !rl.IsRevoked(cert) {
 		t.Errorf("cert %s was not revoked", cert.KeyId)
 	}
 }

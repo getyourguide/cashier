@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/nsheridan/cashier/server/auth"
-	"github.com/nsheridan/cashier/server/config"
+	"github.com/getyourguide/cashier/server/auth"
+	"github.com/getyourguide/cashier/server/config"
 	"github.com/stretchr/testify/assert"
 )
 

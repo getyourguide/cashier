@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/nsheridan/cashier/testdata"
+	"github.com/getyourguide/cashier/testdata"
 	"github.com/stretchr/testify/assert"
 
 	"golang.org/x/crypto/ssh"

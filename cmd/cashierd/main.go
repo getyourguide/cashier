@@ -6,10 +6,10 @@ import (
 	"log"
 	"os"
 
-	"github.com/nsheridan/cashier/lib"
-	"github.com/nsheridan/cashier/server"
-	"github.com/nsheridan/cashier/server/config"
-	"github.com/nsheridan/cashier/server/wkfs/vaultfs"
+	"github.com/getyourguide/cashier/lib"
+	"github.com/getyourguide/cashier/server"
+	"github.com/getyourguide/cashier/server/config"
+	"github.com/getyourguide/cashier/server/wkfs/vaultfs"
 	"github.com/nsheridan/wkfs/s3"
 )
 

@@ -7,8 +7,8 @@ import (
 	"path"
 	"time"
 
-	"github.com/nsheridan/cashier/server/config"
-	"github.com/nsheridan/cashier/server/helpers/vault"
+	"github.com/getyourguide/cashier/server/config"
+	"github.com/getyourguide/cashier/server/helpers/vault"
 	"go4.org/wkfs"
 )
 

@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/nsheridan/cashier/lib"
-	"github.com/nsheridan/cashier/testdata"
+	"github.com/getyourguide/cashier/lib"
+	"github.com/getyourguide/cashier/testdata"
 
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/crypto/ssh/agent"

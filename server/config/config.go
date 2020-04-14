@@ -7,7 +7,7 @@ import (
 
 	"github.com/hashicorp/go-multierror"
 	"github.com/homemade/scl"
-	"github.com/nsheridan/cashier/server/helpers/vault"
+	"github.com/getyourguide/cashier/server/helpers/vault"
 	"github.com/pkg/errors"
 )
 

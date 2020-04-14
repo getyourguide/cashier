@@ -10,8 +10,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/nsheridan/cashier/server/config"
-	"github.com/nsheridan/cashier/server/metrics"
+	"github.com/getyourguide/cashier/server/config"
+	"github.com/getyourguide/cashier/server/metrics"
 
 	"golang.org/x/oauth2"
 )

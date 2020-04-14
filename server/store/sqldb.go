@@ -10,7 +10,7 @@ import (
 	"github.com/gobuffalo/packr"
 	multierror "github.com/hashicorp/go-multierror"
 	"github.com/jmoiron/sqlx"
-	"github.com/nsheridan/cashier/server/config"
+	"github.com/getyourguide/cashier/server/config"
 	"github.com/pkg/errors"
 	migrate "github.com/rubenv/sql-migrate"
 )

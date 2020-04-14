@@ -16,7 +16,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/nsheridan/cashier/lib"
+	"github.com/getyourguide/cashier/lib"
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/crypto/ssh/agent"
